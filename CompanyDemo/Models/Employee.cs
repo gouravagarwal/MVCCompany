@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,9 @@ namespace CompanyDemo.Models
         public string Name { get; set; }
 
         public string Email { get; set; }
+
+        [ForeignKey("Department")]
+        public int DepartmentId { get; set; }
 
         public virtual Department Department { get; set; }
     }

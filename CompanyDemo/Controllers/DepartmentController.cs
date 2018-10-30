@@ -39,7 +39,7 @@ namespace CompanyDemo.Controllers
         [Route("GetDepartments")]
         public JsonResult GetDepartments()
         {
-            return Json(new { depts = db.Departments.ToList() }, JsonRequestBehavior.AllowGet);
+            return Json(new { depts = db.Departments.Select(x => new { Id = x.Id , DeptName = x.DeptName}).ToList() }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -59,13 +59,13 @@ namespace CompanyDemo.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployee")]
-        public JsonResult GetEmployees(int id)
+        [Route("GetEmployee/{id}")]
+        public JsonResult GetEmployees(int? id)
         {
 
-            var employees = db.Employees.Where(x => x.Department.Id == id).ToList();
+            var employees = db.Employees.Where(x => x.DepartmentId == id).ToList();
 
-            return Json(new { emp = employees}, JsonRequestBehavior.AllowGet);
+            return Json(employees);
         }
 
 

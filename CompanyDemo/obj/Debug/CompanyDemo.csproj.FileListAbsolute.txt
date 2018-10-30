@@ -93,11 +93,11 @@ C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.cspr
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.csproj.CopyComplete
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.dll
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.pdb
-C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.Migrations.initial.resources
-C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.csproj.GenerateResource.cache
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Net.Http.Formatting.dll
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Web.Http.dll
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Web.Http.WebHost.dll
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Net.Http.Formatting.xml
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Web.Http.xml
 C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\bin\System.Web.Http.WebHost.xml
+C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.Migrations.Initial.resources
+C:\Users\gouravz\source\repos\CompanyDemo\CompanyDemo\obj\Debug\CompanyDemo.csproj.GenerateResource.cache

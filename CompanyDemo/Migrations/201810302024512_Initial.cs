@@ -3,7 +3,7 @@ namespace CompanyDemo.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -23,18 +23,18 @@ namespace CompanyDemo.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Email = c.String(),
-                        Department_Id = c.Int(),
+                        DepartmentId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Departments", t => t.Department_Id)
-                .Index(t => t.Department_Id);
+                .ForeignKey("dbo.Departments", t => t.DepartmentId, cascadeDelete: true)
+                .Index(t => t.DepartmentId);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Employees", "Department_Id", "dbo.Departments");
-            DropIndex("dbo.Employees", new[] { "Department_Id" });
+            DropForeignKey("dbo.Employees", "DepartmentId", "dbo.Departments");
+            DropIndex("dbo.Employees", new[] { "DepartmentId" });
             DropTable("dbo.Employees");
             DropTable("dbo.Departments");
         }

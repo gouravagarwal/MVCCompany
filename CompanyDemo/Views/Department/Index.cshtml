@@ -4,18 +4,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Departments</h2>
-
+<h2>Company Management</h2>
+<br />
 <p>
     <input type="button" class="btn btn-primary" value="Add Department" data-toggle="modal" data-target="#createModal" />
     <button type="button" class="btn btn-primary" id="addEmp">Add Employee</button>
 </p>
-<table class="table">
+<br />
+<table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DeptName)
+            Department Name
         </th>
-        <th></th>
+        <th>
+            Actions
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -25,19 +28,19 @@
                 @Html.DisplayFor(modelItem => item.DeptName)
             </td>
             <td>
-                <button type="button" class="btn btn-primary" id="showDept">Show Details</button>
+                <button type="button" class="btn btn-primary" id="showDept" onclick="showEmployees(@item.Id)">Show Details</button>
             </td>
         </tr>
     }
 
 </table>
 
-
+<!--Modal to add department-->
 <div class="modal" id="createModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add Employee</h4>
+                <h4 class="modal-title">Add Department</h4>
             </div>
             <form class="modal-body form-group">
                 <div class="row">
@@ -46,13 +49,14 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="close" class="btn btn-warning" data-dismiss="modal">Close</button>
                 <button type="button" id="createNewDept" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal to add employee-->
 <div class="modal" id="createEmpModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -64,55 +68,53 @@
                     <label>Name:</label>
                     <input type="text" id="newEmpName" class="form-control" />
                 </div>
+                <br />
                 <div class="row">
                     <label>Email:</label>
                     <input type="text" id="newEmpEmail" class="form-control" />
                 </div>
+                <br />
                 <div class="row">
                     <label>Department:</label>
-                    <select id="dept">
-                        <option value="-1">Select Department</option>
-                    </select>
+                    <select id="dept"></select>
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="close" class="btn btn-warning" data-dismiss="modal">Close</button>
                 <button type="button" id="createNewEmployee" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>
 </div>
 
-@*<div class="modal" id="createModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add Employee</h4>
-                </div>
-                <form class="modal-body form-group">
-                    <div class="row">
-                        <label>Name:</label>
-                        <input type="text" id="newDeptName" class="form-control" />
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" id="createNewDept" class="btn btn-primary">Add</button>
-                </div>
+<!--Modal to show list of employees in a department-->
+<div class="modal" id="showEmployees">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Employees</h4>
+            </div>
+            <div id="empTable">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>*@
+    </div>
+</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
-
+        //add new department in db
         $("#createNewDept").click(function () {
             addDepartment();
         });
 
+        //open add employee modal and fill default values for department
         $("#addEmp").click(function () {
             $.ajax({
                 url: "/Department/GetDepartments",
@@ -120,15 +122,16 @@
                 success: function (res) {
                     $("#dept").empty();
 
+                    $("#dept").append($("<option  />").val("-1").text("Select Department"));
+
                     if (res.depts != null && res.depts.length > 0) {
-                        var appenddata = "";
-                        $.each(res.depts)(function (key, value) {
-                            appenddata += "<option value = '" + value.Id + " '>" + value.DeptName + " </option>";  
-                      //  $("#dept").append($("<option  />").val(value.Id).text(value.DeptName));
-                        });
-                        $("#dept").html(appenddata);
+                        $.each(res.depts, function (index, item) {
+                            $('#dept').append(
+                                $('<option></option>').val(item.Id).html(item.DeptName)
+                            );
+                        })
                     }
-                    $("#createEmpModal").modal('open');
+                    $("#createEmpModal").modal();
                 },
                 error: function () {
                     swal("Error Occured");
@@ -136,12 +139,14 @@
             })
         });
 
+        //add new employee in db
         $("#createNewEmployee").click(function () {
             addEmployee();
         });
 
     });
 
+    //add department to database
     function addDepartment() {
         var dept = {};
         dept.DeptName = $("#newDeptName").val();
@@ -155,7 +160,7 @@
             success: function (res) {
                 $("#createModal").modal('hide');
                 if (res == "true")
-                    swal("Department Added Successfully!", "success");
+                    swal("Department Added Successfully!");
                 else if (res == "false")
                     swal("Bad Request");
             },
@@ -164,14 +169,15 @@
             }
         });
 
-        //   window.location.reload();
+        window.location.reload();
     }
 
+    //add new employee to database
     function addEmployee() {
         var emp = {};
         emp.Name = $("#newEmpName").val();
         emp.Email = $("#newEmpEmail").val();
-        emp.Department.Id = $("#dept").val();
+        emp.DepartmentId = $('#dept').val();
 
         $.ajax({
             url: "/Department/CreateEmp",
@@ -182,7 +188,7 @@
             success: function (res) {
                 $("#createEmpModal").modal('hide');
                 if (res == "true")
-                    swal("Employee Added Successfully!", "success");
+                    swal("Employee Added Successfully!");
                 else if (res == "false")
                     swal("Bad Request");
             },
@@ -191,7 +197,28 @@
             }
         });
 
-        //   window.location.reload();
+        window.location.reload();
+    }
+
+    //display list of employees in a department
+    function showEmployees(id) {
+        $.ajax({
+            url: "/Department/GetEmployee/" + id,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (res) {
+                if (res && res.length > 0) {
+                    $('#empTable').append('');
+
+                    $('#showEmployees').modal();
+                }
+                else
+                    swal("No employees in the selected department!!");
+            },
+            error: function () {
+                swal("Error Occured");
+            }
+        });
     }
 
 </script>
