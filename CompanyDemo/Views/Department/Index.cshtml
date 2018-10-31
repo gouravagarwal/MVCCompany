@@ -94,11 +94,18 @@
             <div class="modal-header">
                 <h4 class="modal-title">Employees</h4>
             </div>
-            <div id="empTable">
+            <table id="empTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="empTableBody"></tbody>
+            </table>
 
-            </div>
             <div class="modal-footer">
-                <button type="button" id="close" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="close" class="btn btn-warning" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -163,13 +170,15 @@
                     swal("Department Added Successfully!");
                 else if (res == "false")
                     swal("Bad Request");
+
+                window.location.reload();
             },
             error: function () {
                 swal("Error Occured");
             }
         });
 
-        window.location.reload();
+        
     }
 
     //add new employee to database
@@ -191,6 +200,8 @@
                     swal("Employee Added Successfully!");
                 else if (res == "false")
                     swal("Bad Request");
+
+                window.location.reload();
             },
             error: function () {
                 swal("Error Occured");
@@ -208,14 +219,21 @@
             contentType: 'application/json',
             success: function (res) {
                 if (res && res.length > 0) {
-                    $('#empTable').append('');
+                    var tblHtml = "";
+                    $.each(res, function (a, b) {
+                        tblHtml += "<tr>"
+                        tblHtml += "<td>" + b.Name + "</td>";
+                        tblHtml += "<td>" + b.Email + "</td>";
+                        tblHtml += "</tr>";
+                    });
+                    $("#empTableBody").html(tblHtml);
 
                     $('#showEmployees').modal();
                 }
                 else
                     swal("No employees in the selected department!!");
             },
-            error: function () {
+            error: function (xhr) {
                 swal("Error Occured");
             }
         });

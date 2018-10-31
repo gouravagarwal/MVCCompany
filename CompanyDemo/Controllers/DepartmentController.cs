@@ -63,9 +63,9 @@ namespace CompanyDemo.Controllers
         public JsonResult GetEmployees(int? id)
         {
 
-            var employees = db.Employees.Where(x => x.DepartmentId == id).ToList();
+            var employees = db.Employees.Where(x => x.DepartmentId == id).Select(y => new { y.Name, y.Id, y.Email, y.DepartmentId }).ToList();
 
-            return Json(employees);
+            return Json(employees, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -13,7 +13,7 @@ namespace CompanyDemo.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201810302024512_Initial"; }
+            get { return "201810310512045_Initial"; }
         }
         
         string IMigrationMetadata.Source
